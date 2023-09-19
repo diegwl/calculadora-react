@@ -3,14 +3,26 @@ import * as types from './types';
 export const reducer = (state, action) => {
     switch (action.types) {
         case types.ADD_DIGIT: {
-            console.log(action.digit)
-            return {...state, digits: state.digits + action.digit}
+            if (action.label === '.' && state.displayValue.includes('.')) {
+                return {...state}
+            }
+
+            const clearDisplay = state.displayValue === '0' || state.clearDisplay
+            const currentValue = clearDisplay ? '' : state.displayValue
+
+            return {...state, displayValue: currentValue + action.label}
         }
         case types.SET_OPERATION: {
-            return {...state, operation: action.operation}
+            return {...state, operation: action.label}
         }
         case types.CLEAR_MEMORY: {
-            return {...state, digits: '0', operation: null}
+            return {...state, 
+                displayValue: '0',
+                clearDisplay: false,
+                operation: null,
+                values: [0, 0],
+                current: 0
+            }
         }
     }
 }

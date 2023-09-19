@@ -1,11 +1,11 @@
 import * as types from './types';
 
-export const addDigit = (dispatch) => {
-    dispatch({ types: types.ADD_DIGIT });
+export const addDigit = (dispatch, label) => {
+    dispatch({ types: types.ADD_DIGIT, label: label });
 }
 
-export const setOperation = (dispatch) => {
-    dispatch({ types: types.SET_OPERATION });
+export const setOperation = (dispatch, label) => {
+    dispatch({ types: types.SET_OPERATION, label: label });
 }
 
 export const clearMemory = (dispatch) => {

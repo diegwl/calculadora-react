@@ -1,9 +1,15 @@
 import './styles.css'
+import { useCalculatorContext } from '../../hooks/useCalculatorContext';
 
-function Display({ value }) {
+function Display() {
+
+  const calculatorContext = useCalculatorContext();
+
+  const { calculatorState } = calculatorContext;
+
   return (
     <div className='display'>
-      { value }
+      {calculatorState.displayValue}
     </div>
   )
 }
