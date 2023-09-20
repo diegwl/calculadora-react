@@ -10,7 +10,7 @@ export const reducer = (state, action) => {
             const clearDisplay = state.displayValue === '0' || state.clearDisplay
             const currentValue = clearDisplay ? '' : state.displayValue
 
-            return {...state, displayValue: currentValue + action.label}
+            return {...state, displayValue: currentValue + action.label, clearDisplay: false}
         }
         case types.SET_OPERATION: {
             return {...state, operation: action.label}
