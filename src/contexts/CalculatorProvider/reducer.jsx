@@ -10,6 +10,13 @@ export const reducer = (state, action) => {
             const clearDisplay = state.displayValue === '0' || state.clearDisplay
             const currentValue = clearDisplay ? '' : state.displayValue
 
+            if (action.label !== '.') {
+                const newValue = parseFloat(displayValue)
+                let newValues = [...state.values]
+                newValues[state.current] = newValue
+                return {...state, values: newValues, displayValue: currentValue + action.label, clearDisplay: false}
+            }
+
             return {...state, displayValue: currentValue + action.label, clearDisplay: false}
         }
         case types.SET_OPERATION: {
