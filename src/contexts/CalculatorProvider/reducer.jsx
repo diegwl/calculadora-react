@@ -11,7 +11,7 @@ export const reducer = (state, action) => {
             const currentValue = clearDisplay ? '' : state.displayValue
 
             if (action.label !== '.') {
-                const newValue = parseFloat(displayValue)
+                const newValue = parseFloat(currentValue + action.label)
                 let newValues = [...state.values]
                 newValues[state.current] = newValue
                 return {...state, values: newValues, displayValue: currentValue + action.label, clearDisplay: false}
@@ -20,7 +20,67 @@ export const reducer = (state, action) => {
             return {...state, displayValue: currentValue + action.label, clearDisplay: false}
         }
         case types.SET_OPERATION: {
-            return {...state, operation: action.label}
+            if (state.current == 0) {
+                return {...state, operation: action.label, current: 1, clearDisplay: true}
+            } else {
+                const equals = (action.label === '=')
+                const currentOperation = state.operation
+                const values = [...state.values]
+                const realOperation = action.label
+
+                switch (currentOperation) {
+                    case '+':
+                        values[0] = (values[0] + values[1])
+                        if (!Number.isInteger(values[0])){
+                            values[0] = (values[0]).toFixed(3)
+                        }
+                        break;
+                    case '-':
+                        values[0] = (values[0] - values[1])
+                        if (!Number.isInteger(values[0])){
+                            values[0] = (values[0]).toFixed(3)
+                        }
+                        break;
+                    case '*':
+                        values[0] = (values[0] * values[1])
+                        if (!Number.isInteger(values[0])){
+                            values[0] = (values[0]).toFixed(3)
+                        }
+                        break;
+                    case '/':
+                        values[0] = (values[0] / values[1])
+                        if (!Number.isInteger(values[0])){
+                            values[0] = (values[0]).toFixed(3)
+                        }
+                        break;
+                    case '=':
+                        
+                        if (realOperation == '+') {
+                            values[0] = (values[0] + values[1])
+                            
+                        } else if (realOperation == '-') {
+                            values[0] = (values[0] - values[1])
+                            
+                        } else if (realOperation == '*') {
+                            values[0] = (values[0] * values[1])
+                            
+                        } else if (realOperation == '/') {
+                            values[0] = (values[0] / values[1])
+                            
+                        }
+
+                        if (!Number.isInteger(values[0])){
+                            values[0] = (values[0]).toFixed(3)
+                        }
+
+                        break;
+                    default:
+                        break;
+                }
+                values[1] = 0
+
+                return {...state, displayValue: values[0], operation: equals ? null : action.label, current: equals ? 0 : 1, clearDisplay: !equals, values: values}
+            }
         }
         case types.CLEAR_MEMORY: {
             return {...state, 
